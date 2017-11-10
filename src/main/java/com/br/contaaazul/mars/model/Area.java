@@ -18,6 +18,6 @@ public class Area {
 
 		for (int linha = 0; linha < VALOR_MINIMO; linha++)
 			for (int coluna = 0; coluna < VALOR_MINIMO; coluna++)
-				tamanho[linha][coluna] = linha + " ," + coluna;
+				tamanho[linha][coluna] = linha + "|" + coluna;
 	}
 }

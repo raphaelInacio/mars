@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.br.contaaazul.mars.model.Area;
 import com.br.contaaazul.mars.model.Cordenada;
+import com.br.contaaazul.mars.model.OrientacaoEnum;
 import com.br.contaaazul.mars.model.Posicao;
 
 @Service
@@ -16,7 +17,6 @@ public class AreaServiceImpl implements AreaService {
 	public Posicao percorreTerreno(Cordenada cordenada, Posicao posicaoInicial) {
 		
 		Area area = new Area();
-		Posicao posicaoFinal = new Posicao();
 
 		posicaoCartesianaX = 0;
 		posicaoCartesianaY = 0;
@@ -26,7 +26,9 @@ public class AreaServiceImpl implements AreaService {
 		
 		String areaPercorrida = area.getTamanho()[posicaoCartesianaX][posicaoCartesianaY];		
 		
-		System.out.println(areaPercorrida);
+		String[] split = areaPercorrida.split("|");
+
+		Posicao posicaoFinal = new Posicao(Integer.parseInt(split[0]),Integer.parseInt(split[0]), OrientacaoEnum.WEST);
 		
 		return posicaoFinal;
 	}
