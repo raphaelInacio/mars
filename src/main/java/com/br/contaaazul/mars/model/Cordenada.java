@@ -7,14 +7,14 @@ import lombok.ToString;
 @ToString
 public class Cordenada{
 
-	private ControleEnum cartesianoX;
-	private ControleEnum cartesianoY;
-	private ControleEnum orientacao;
+	private ControleEnum primeiroComando;
+	private ControleEnum segundoComando;
+	private ControleEnum terceiroComando;
 
 	public Cordenada(ControleEnum cartesianoX, ControleEnum cartesianoY, ControleEnum orientacao) {
-		this.cartesianoX = cartesianoX;
-		this.cartesianoY = cartesianoY;
-		this.orientacao = orientacao;
+		this.primeiroComando = cartesianoX;
+		this.segundoComando = cartesianoY;
+		this.terceiroComando = orientacao;
 	}
 
 }

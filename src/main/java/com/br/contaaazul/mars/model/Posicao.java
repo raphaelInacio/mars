@@ -19,6 +19,6 @@ public class Posicao {
 
 	public String getSaida() {
 		return new StringBuilder().append("(").append(cartesianoX).append(",").append(cartesianoY).append(",")
-				.append(orientacao).append(")").toString();
+				.append(orientacao.getValue()).append(")").toString();
 	}
 }

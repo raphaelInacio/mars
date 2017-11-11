@@ -21,7 +21,7 @@ public class AreaServiceTest {
 	private AreaService areaService;
 	
 	@Test
-	public void test() {
+	public void deveAndarDuasPosicoesParaFrenteEVirarParaOeste() {
 		Cordenada cordenada = new Cordenada(ControleEnum.M,ControleEnum.M,ControleEnum.L);
 		Posicao posicao = areaService.percorreTerreno(cordenada, new Posicao());
 		assertEquals("(0,2,W)", posicao.getSaida());
