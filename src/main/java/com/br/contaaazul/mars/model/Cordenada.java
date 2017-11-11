@@ -1,20 +1,15 @@
 package com.br.contaaazul.mars.model;
 
+import java.util.List;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
 
 @Data
 @ToString
+@AllArgsConstructor
 public class Cordenada{
-
-	private ControleEnum primeiroComando;
-	private ControleEnum segundoComando;
-	private ControleEnum terceiroComando;
-
-	public Cordenada(ControleEnum cartesianoX, ControleEnum cartesianoY, ControleEnum orientacao) {
-		this.primeiroComando = cartesianoX;
-		this.segundoComando = cartesianoY;
-		this.terceiroComando = orientacao;
-	}
-
+	private List<ComandoEnum> comandos;
+	
 }

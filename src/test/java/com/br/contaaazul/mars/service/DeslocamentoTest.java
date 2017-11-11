@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.br.contaaazul.mars.model.ControleEnum;
+import com.br.contaaazul.mars.model.ComandoEnum;
 import com.br.contaaazul.mars.model.Cordenada;
 
 @RunWith(SpringRunner.class)
@@ -19,16 +19,14 @@ public class DeslocamentoTest {
 	private DeslocamentoService deslocamentoService;
 
 	@Test
-	public void deveRetorarTresQuandoEnviados3VezesM() {
-		Cordenada cordenada = new Cordenada(ControleEnum.M, ControleEnum.M, ControleEnum.M);
-		int deslocamento = deslocamentoService.processar(cordenada);
-		assertEquals(3, deslocamento);
+	public void deveRetorarTresQuandoEnviados1VezesM() {
+		int deslocamento = deslocamentoService.processar(ComandoEnum.M);
+		assertEquals(1, deslocamento);
 	}
 
 	@Test
 	public void deveRetorarZeroQuandoNaoEnviadoM() {
-		Cordenada cordenada = new Cordenada(ControleEnum.R, ControleEnum.R, ControleEnum.L);
-		int deslocamento = deslocamentoService.processar(cordenada);
+		int deslocamento = deslocamentoService.processar(ComandoEnum.R);
 		assertEquals(0, deslocamento);
 	}
 

@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.br.contaaazul.mars.model.Area;
-import com.br.contaaazul.mars.model.ControleEnum;
+import com.br.contaaazul.mars.model.ComandoEnum;
 import com.br.contaaazul.mars.model.Cordenada;
 import com.br.contaaazul.mars.model.CordenadasTest;
 import com.br.contaaazul.mars.model.OrientacaoEnum;
@@ -28,15 +28,30 @@ public class AreaServiceImpl implements AreaService {
 	private int posicaoBase;
 	private String areaPercorrida;
 	private OrientacaoEnum orientacao;
+	private Area area = new Area();
+	private Posicao posicaoFinal;
+	private Posicao posicaoInicial;
 
 	@Override
 	public Posicao percorreTerreno(Cordenada cordenada, Posicao posicaoInicial) {
 
-		Area area = new Area();
+		this.posicaoInicial = posicaoInicial;
 
-		deslocamento = deslocamentoService.processar(cordenada);
-		orientacao = orientacaoService.processar(cordenada, posicaoInicial);
+		for (ComandoEnum comandoEnum : cordenada.getComandos()) {
+			if (ComandoEnum.M.equals(comandoEnum)) {
+				deslocamento = deslocamentoService.processar(comandoEnum);
+				processar();
+			} else {
+				orientacao = orientacaoService.processar(comandoEnum, posicaoInicial);
+				processar();
+			}
 
+		}
+
+		return this.posicaoFinal;
+	}
+
+	private void processar() {
 		if (OrientacaoEnum.WEST.equals(orientacao)) {
 			areaPercorrida = area.getTamanho()[posicaoInicial.getCartesianoX() + posicaoBase][posicaoInicial
 					.getCartesianoY() + deslocamento];
@@ -47,9 +62,7 @@ public class AreaServiceImpl implements AreaService {
 
 		String[] posicoes = areaPercorrida.split("|");
 
-		Posicao posicaoFinal = new Posicao(Integer.parseInt(posicoes[0]), Integer.parseInt(posicoes[2]), orientacao);
-
-		return posicaoFinal;
+		posicaoFinal = new Posicao(Integer.parseInt(posicoes[0]), Integer.parseInt(posicoes[2]), orientacao);
 	}
 
 }

@@ -1,12 +1,12 @@
 package com.br.contaaazul.mars.model;
 
-public enum ControleEnum {
+public enum ComandoEnum {
 
 	R(1, "R"), L(1, "L"), M(1, "M");
 	private int valor;
 	private String descricao;
 
-	private ControleEnum(int valor, String descricao) {
+	private ComandoEnum(int valor, String descricao) {
 		this.setValor(valor);
 		this.setDescricao(descricao);
 	}
