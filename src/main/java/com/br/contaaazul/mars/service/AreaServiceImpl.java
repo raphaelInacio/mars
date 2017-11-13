@@ -1,68 +1,107 @@
 package com.br.contaaazul.mars.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.br.contaaazul.mars.exception.AreaException;
 import com.br.contaaazul.mars.model.Area;
 import com.br.contaaazul.mars.model.ComandoEnum;
-import com.br.contaaazul.mars.model.Cordenada;
-import com.br.contaaazul.mars.model.CordenadasTest;
+import com.br.contaaazul.mars.model.Controle;
 import com.br.contaaazul.mars.model.OrientacaoEnum;
 import com.br.contaaazul.mars.model.Posicao;
 
 @Service
 public class AreaServiceImpl implements AreaService {
 
-	@Autowired
-	private DeslocamentoService deslocamentoService;
+	private static final Logger loggger = LoggerFactory.getLogger(AreaServiceImpl.class);
 
 	@Autowired
-	private OrientacaoService orientacaoService;
-
-	private int deslocamento;
-	private int posicaoBase;
-	private String areaPercorrida;
-	private OrientacaoEnum orientacao;
-	private Area area = new Area();
-	private Posicao posicaoFinal;
-	private Posicao posicaoInicial;
-
-	@Override
-	public Posicao percorreTerreno(Cordenada cordenada, Posicao posicaoInicial) {
-
-		this.posicaoInicial = posicaoInicial;
-
-		for (ComandoEnum comandoEnum : cordenada.getComandos()) {
-			if (ComandoEnum.M.equals(comandoEnum)) {
-				deslocamento = deslocamentoService.processar(comandoEnum);
-				processar();
-			} else {
-				orientacao = orientacaoService.processar(comandoEnum, posicaoInicial);
-				processar();
-			}
-
-		}
-
-		return this.posicaoFinal;
+	public AreaServiceImpl(OrientacaoService orientacaoService) {
+		this.orientacaoService = orientacaoService;
 	}
 
-	private void processar() {
-		if (OrientacaoEnum.WEST.equals(orientacao)) {
-			areaPercorrida = area.getTamanho()[posicaoInicial.getCartesianoX() + posicaoBase][posicaoInicial
-					.getCartesianoY() + deslocamento];
-		} else {
-			areaPercorrida = area.getTamanho()[posicaoInicial.getCartesianoX() + deslocamento][posicaoInicial
-					.getCartesianoY() + posicaoBase];
+	private OrientacaoService orientacaoService;
+	private Deslocamento deslocamentoService;
+	private Area area;
+	private Posicao posicaoAtual;
+	private String areaPercorrida;
+	private OrientacaoEnum orientacao;
+
+	@Override
+	public Posicao percorrerTerreno(Controle cordenada, Posicao ultimaPosicao, Area area) throws AreaException {
+
+		loggger.info("Iniciando movimentação com robo no terreno...");
+
+		try {
+
+			atualizarPosicao(ultimaPosicao);
+			atualizarArea(area);
+
+			cordenada.getComandos().forEach(comandoEnum -> {
+				if (isMovimento(comandoEnum)) {
+					andar();
+				} else {
+					orientacao = orientacaoService.processar(comandoEnum, posicaoAtual.getOrientacao());
+					atualizarOrientacao();
+				}
+			});
+
+			return this.posicaoAtual;
+
+		} catch (Exception e) {
+			loggger.error("Houve um erro ao percorrer o terreno!");
+			throw new AreaException("Posição inválida");
 		}
+	}
+	
+	private void andar() {
+		deslocamentoService = calibrarDeslocamento();
+		areaPercorrida = deslocamentoService.iniciar(posicaoAtual, area);
+		salvarPosicao();
+	}
 
+	private boolean isMovimento(ComandoEnum comandoEnum) {
+		return ComandoEnum.M.equals(comandoEnum);
+	}
+
+	private Deslocamento calibrarDeslocamento() {
+		
+		if (orientacao == null)
+			orientacao = posicaoAtual.getOrientacao();
+
+		if (OrientacaoEnum.SOUTH.equals(orientacao))
+			return new DeslocamentoSul();
+
+		if (OrientacaoEnum.NORTH.equals(orientacao))
+			return new DeslocamentoNorte();
+
+		if (OrientacaoEnum.EAST.equals(orientacao))
+			return new DeslocamentoLeste();
+
+		return new DeslocamentoOeste();
+	}
+
+	private void salvarPosicao() {
 		String[] posicoes = areaPercorrida.split("|");
+		posicaoAtual = new Posicao(Integer.parseInt(posicoes[0]), Integer.parseInt(posicoes[2]), orientacao);
+		loggger.info("Nova posição salva {}", posicaoAtual.getSaida());
+	}
 
-		posicaoFinal = new Posicao(Integer.parseInt(posicoes[0]), Integer.parseInt(posicoes[2]), orientacao);
+	private void atualizarOrientacao() {
+		posicaoAtual = new Posicao(posicaoAtual.getCartesianoX(), posicaoAtual.getCartesianoY(), orientacao);
+		loggger.info("Nova orientação atualizada {}", posicaoAtual.getSaida());
+	}
+
+	private void atualizarPosicao(Posicao ultimaPosicao) {
+		this.posicaoAtual = ultimaPosicao;
+		loggger.info("Nova posicao atualizada {}", ultimaPosicao.getSaida());
+	}
+
+	private void atualizarArea(Area area) {
+		loggger.info("Atualizando area a ser percorrida {}", area);
+		this.area = area;
 	}
 
 }

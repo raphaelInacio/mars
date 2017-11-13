@@ -1,8 +1,10 @@
 package com.br.contaaazul.mars.service;
 
-import com.br.contaaazul.mars.model.Cordenada;
+import org.springframework.http.ResponseEntity;
+
+import com.br.contaaazul.mars.model.Controle;
 import com.br.contaaazul.mars.model.Posicao;
 
 public interface RoboService {
-	Posicao aplicar(Cordenada cordendas);
+	ResponseEntity<Posicao> aplicar(Controle cordendas);
 }

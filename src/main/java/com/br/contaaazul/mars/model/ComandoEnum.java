@@ -2,29 +2,29 @@ package com.br.contaaazul.mars.model;
 
 public enum ComandoEnum {
 
-	R(1, "R"), L(1, "L"), M(1, "M");
-	private int valor;
-	private String descricao;
+	R("R"), L("L"), M("M");
 
-	private ComandoEnum(int valor, String descricao) {
-		this.setValor(valor);
-		this.setDescricao(descricao);
+	private String value;
+
+	private ComandoEnum(String value) {
+		this.value = value;
 	}
 
-	public int getValor() {
-		return valor;
+	public String getValue() {
+		return value;
 	}
 
-	public void setValor(int valor) {
-		this.valor = valor;
-	}
-
-	public String getDescricao() {
-		return descricao;
-	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	public static ComandoEnum mapStringToEnum(String value) {
+		switch (value) {
+		case "R":
+			return ComandoEnum.R;
+		case "L":
+			return ComandoEnum.L;
+		case "M":
+			return ComandoEnum.M;
+		default:
+			throw new IllegalArgumentException("Comando inválido");
+		}
 	}
 
 }
