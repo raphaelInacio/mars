@@ -1,4 +1,4 @@
-package com.br.contaaazul.mars.model;
+package com.br.contaaazul.mars.enums;
 
 public enum ComandoEnum {
 
@@ -25,6 +25,18 @@ public enum ComandoEnum {
 		default:
 			throw new IllegalArgumentException("Comando inválido");
 		}
+	}
+
+	public static boolean isMove(ComandoEnum comando) {
+		return ComandoEnum.M.equals(comando);
+	}
+
+	public static boolean isRight(ComandoEnum comando) {
+		return ComandoEnum.R.equals(comando);
+	}
+
+	public static boolean isLeft(ComandoEnum comando) {
+		return ComandoEnum.L.equals(comando);
 	}
 
 }

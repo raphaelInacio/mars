@@ -1,4 +1,4 @@
-package com.br.contaaazul.mars.service;
+package com.br.contaaazul.mars.services;
 
 import static org.junit.Assert.*;
 
@@ -8,8 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.br.contaaazul.mars.model.ComandoEnum;
-import com.br.contaaazul.mars.model.OrientacaoEnum;
+import com.br.contaaazul.mars.enums.ComandoEnum;
+import com.br.contaaazul.mars.enums.OrientacaoEnum;
+import com.br.contaaazul.mars.services.OrientacaoService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

@@ -1,10 +1,11 @@
-package com.br.contaaazul.mars.model;
+package com.br.contaaazul.mars.domain;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
 import com.br.contaaazul.mars.exception.AreaException;
+import com.br.contaaazul.mars.domain.Area;
 
 public class AreaTest {
 

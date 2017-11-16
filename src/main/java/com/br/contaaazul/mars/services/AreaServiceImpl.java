@@ -1,16 +1,17 @@
-package com.br.contaaazul.mars.service;
+package com.br.contaaazul.mars.services;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.br.contaaazul.mars.enums.ComandoEnum;
+import com.br.contaaazul.mars.enums.OrientacaoEnum;
 import com.br.contaaazul.mars.exception.AreaException;
-import com.br.contaaazul.mars.model.Area;
-import com.br.contaaazul.mars.model.ComandoEnum;
-import com.br.contaaazul.mars.model.Controle;
-import com.br.contaaazul.mars.model.OrientacaoEnum;
-import com.br.contaaazul.mars.model.Posicao;
+import com.br.contaaazul.mars.domain.Area;
+import com.br.contaaazul.mars.domain.Controle;
+import com.br.contaaazul.mars.domain.Posicao;
+import com.br.contaaazul.mars.domain.Robo;
 
 @Service
 public class AreaServiceImpl implements AreaService {
@@ -30,21 +31,20 @@ public class AreaServiceImpl implements AreaService {
 	private OrientacaoEnum orientacao;
 
 	@Override
-	public Posicao percorrerTerreno(Controle cordenada, Posicao ultimaPosicao, Area area) throws AreaException {
+	public Posicao percorrerTerreno(Controle comandos, Robo robo) throws AreaException {
 
 		loggger.info("Iniciando movimentação com robo no terreno...");
 
 		try {
 
-			atualizarPosicao(ultimaPosicao);
-			atualizarArea(area);
+			atualizarPosicao(robo.ultimaPosicao());
+			atualizarArea(robo.getArea());
 
-			cordenada.getComandos().forEach(comandoEnum -> {
-				if (isMovimento(comandoEnum)) {
+			comandos.getComandos().forEach(comandoEnum -> {
+				if (ComandoEnum.isMove(comandoEnum)) {
 					andar();
 				} else {
-					orientacao = orientacaoService.processar(comandoEnum, posicaoAtual.getOrientacao());
-					atualizarOrientacao();
+					calibrarOrientacao(comandoEnum);
 				}
 			});
 
@@ -52,46 +52,33 @@ public class AreaServiceImpl implements AreaService {
 
 		} catch (Exception e) {
 			loggger.error("Houve um erro ao percorrer o terreno!");
-			throw new AreaException("Posição inválida");
+			throw new AreaException("Posição inválida!");
 		}
 	}
-	
+
+	private void calibrarOrientacao(ComandoEnum comandoEnum) {
+		orientacao = orientacaoService.processar(comandoEnum, posicaoAtual.getOrientacao());
+		posicaoAtual = new Posicao(posicaoAtual.getCartesianoX(), posicaoAtual.getCartesianoY(), orientacao);
+		loggger.info("Nova orientação atualizada {}", posicaoAtual.getSaida());
+	}
+
 	private void andar() {
 		deslocamentoService = calibrarDeslocamento();
 		areaPercorrida = deslocamentoService.iniciar(posicaoAtual, area);
 		salvarPosicao();
 	}
 
-	private boolean isMovimento(ComandoEnum comandoEnum) {
-		return ComandoEnum.M.equals(comandoEnum);
-	}
-
 	private Deslocamento calibrarDeslocamento() {
-		
-		if (orientacao == null)
+		if (orientacao == null) {
 			orientacao = posicaoAtual.getOrientacao();
-
-		if (OrientacaoEnum.SOUTH.equals(orientacao))
-			return new DeslocamentoSul();
-
-		if (OrientacaoEnum.NORTH.equals(orientacao))
-			return new DeslocamentoNorte();
-
-		if (OrientacaoEnum.EAST.equals(orientacao))
-			return new DeslocamentoLeste();
-
-		return new DeslocamentoOeste();
+		}
+		return OrientacaoEnum.orientacaoState(orientacao);
 	}
 
 	private void salvarPosicao() {
 		String[] posicoes = areaPercorrida.split("|");
 		posicaoAtual = new Posicao(Integer.parseInt(posicoes[0]), Integer.parseInt(posicoes[2]), orientacao);
 		loggger.info("Nova posição salva {}", posicaoAtual.getSaida());
-	}
-
-	private void atualizarOrientacao() {
-		posicaoAtual = new Posicao(posicaoAtual.getCartesianoX(), posicaoAtual.getCartesianoY(), orientacao);
-		loggger.info("Nova orientação atualizada {}", posicaoAtual.getSaida());
 	}
 
 	private void atualizarPosicao(Posicao ultimaPosicao) {

@@ -1,33 +1,46 @@
-package com.br.contaaazul.mars.model;
+package com.br.contaaazul.mars.domain;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.br.contaaazul.mars.exception.AreaException;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
 @Getter
-@EqualsAndHashCode
 @ToString
+@Entity
 public class Area {
-
-	static final int VALOR_MINIMO = 5;
-	private String[][] dimensao;
-	private String dimensoes;
+	
 	private static final Logger loggger = LoggerFactory.getLogger(Area.class);
 
-	public Area(int linha, int coluna) throws AreaException {
-		if (linha == 0 || coluna == 0) {
+	@Id
+	@GeneratedValue
+	private Long id;
+	private int dimensaoX;
+	private int dimensaoY;
+	private String dimensoes;
+
+	@Transient static final int VALOR_MINIMO = 5;
+	@Transient private String[][] dimensao;
+
+	public Area(int dimensaoX, int dimensaoY) throws AreaException {
+		if (dimensaoX == 0 || dimensaoY == 0) {
 			loggger.error("Dimensão informada é inválida!");
 			throw new AreaException("Dimensões obirgatórias não informadas");
 		}
 
-		loggger.info("Criando area com dimensões personalizadas de {} X {}", linha, coluna);
-		dimensao = new String[linha][coluna];
-		popular(linha, coluna);
+		loggger.info("Criando area com dimensões personalizadas de {} X {}", dimensaoX, dimensaoY);
+		this.dimensaoX = dimensaoX;
+		this.dimensaoY = dimensaoY;
+		dimensao = new String[dimensaoX][dimensaoY];
+		popular(this.dimensaoX, dimensaoY);
 	}
 
 	public Area() {

@@ -1,7 +1,7 @@
-package com.br.contaaazul.mars.service;
+package com.br.contaaazul.mars.services;
 
-import com.br.contaaazul.mars.model.Area;
-import com.br.contaaazul.mars.model.Posicao;
+import com.br.contaaazul.mars.domain.Area;
+import com.br.contaaazul.mars.domain.Posicao;
 
 public class DeslocamentoNorte implements Deslocamento {
 
