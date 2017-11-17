@@ -18,17 +18,17 @@ public class AreaServiceImpl implements AreaService {
 
 	private static final Logger loggger = LoggerFactory.getLogger(AreaServiceImpl.class);
 
-	@Autowired
-	public AreaServiceImpl(OrientacaoService orientacaoService) {
-		this.orientacaoService = orientacaoService;
-	}
-
 	private OrientacaoService orientacaoService;
 	private Deslocamento deslocamentoService;
 	private Area area;
 	private Posicao posicaoAtual;
 	private String areaPercorrida;
 	private OrientacaoEnum orientacao;
+
+	@Autowired
+	public AreaServiceImpl(OrientacaoService orientacaoService) {
+		this.orientacaoService = orientacaoService;
+	}
 
 	@Override
 	public Posicao percorrerTerreno(Controle comandos, Robo robo) throws AreaException {
@@ -69,9 +69,8 @@ public class AreaServiceImpl implements AreaService {
 	}
 
 	private Deslocamento calibrarDeslocamento() {
-		if (orientacao == null) {
+		if (orientacao == null) 
 			orientacao = posicaoAtual.getOrientacao();
-		}
 		return OrientacaoEnum.orientacaoState(orientacao);
 	}
 

@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Optional;
 
-import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,36 +28,8 @@ public class RoboServiceTest {
 	@Autowired
 	private RoboService roboService;
 
-	@Autowired
-	private RoboRepository roboRepository;
-
-	@Before
-	public void init() {
-		criarRobo();
-	}
-
-	public void criarRobo() {
-		if (!roboRepository.existsById(1L)) {
-			Area area = new Area();
-			Robo robo = new Robo(area);
-			roboRepository.save(robo);
-		}
-	}
-
-	public void atualizarPosicaoBase() {
-		Optional<Robo> optionalRobo = roboRepository.findById(1L);
-		Robo robo = optionalRobo.get();
-		robo.atualizarPosicao(new Posicao());
-		roboRepository.save(robo);
-	}
-
-	public void destroy() {
-		roboRepository.deleteAll();
-	}
-
 	@Test
 	public void deveAplicarAsCordenadaEnviadas() {
-		atualizarPosicaoBase();
 		ResponseEntity<String> posicao = roboService.aplicar(Optional.of("MMRMMRMM"));
 		assertEquals("(2,0,S)", posicao.getBody());
 		assertEquals(HttpStatus.OK, posicao.getStatusCode());

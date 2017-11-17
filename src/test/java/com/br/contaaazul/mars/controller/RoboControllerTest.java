@@ -1,6 +1,5 @@
 package com.br.contaaazul.mars.controller;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -10,7 +9,6 @@ import java.util.Optional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -33,8 +31,7 @@ public class RoboControllerTest {
 
 	@Test
 	public void deveFazerUmaChamdaHttpNoRobo() throws Exception {
-		given(this.roboService.aplicar(Optional.of("MMRMMRMM")))
-				.willReturn(new ResponseEntity<String>("(2,0,S)", HttpStatus.OK));
+		given(this.roboService.aplicar(Optional.of("MMRMMRMM"))).willReturn(new ResponseEntity<String>("(2,0,S)", HttpStatus.OK));
 		mvc.perform(get("/rest/mars/MMRMMRMM").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 				.andExpect(jsonPath("$").value("(2,0,S)"));
 	}

@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Optional;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import com.br.contaaazul.mars.enums.OrientacaoEnum;
@@ -18,12 +17,7 @@ import com.br.contaaazul.mars.services.OrientacaoServiceImpl;
 
 public class AreaServiceTest {
 
-	private AreaService areaService;
-
-	@Before
-	public void init() {
-		areaService = new AreaServiceImpl(new OrientacaoServiceImpl());
-	}
+	private AreaService areaService = new AreaServiceImpl(new OrientacaoServiceImpl());
 
 	@Test
 	public void deveRealizarMovimentosComRotacosADireita() throws AreaException {

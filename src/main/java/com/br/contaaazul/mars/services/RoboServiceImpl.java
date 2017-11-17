@@ -25,11 +25,15 @@ public class RoboServiceImpl implements RoboService {
 
 	private static final String MSG_ERROR = "Posição inválida";
 
-	@Autowired
 	private AreaService areaService;
 
-	@Autowired
 	private RoboRepository roboRepository;
+	
+	@Autowired
+	public RoboServiceImpl(AreaService areaService, RoboRepository roboRepository) {
+		this.areaService = areaService;
+		this.roboRepository = roboRepository;
+	}
 
 	@Override
 	public ResponseEntity<String> aplicar(Optional<String> comandos) {
@@ -38,7 +42,7 @@ public class RoboServiceImpl implements RoboService {
 
 		try {
 
-			Optional<Robo> optionalRobo = roboRepository.findById(1L);
+			Optional<Robo> optionalRobo = buscarRobo();
 
 			if (!optionalRobo.isPresent())
 				throw new Exception();
@@ -69,10 +73,18 @@ public class RoboServiceImpl implements RoboService {
 	@Override
 	public ResponseEntity<String> posicaoAtual() {
 		loggger.info("Comandos recebidos, buscando posição atual...");
-		Optional<Robo> robo = roboRepository.findById(1L);
+		Optional<Robo> robo = buscarRobo();
 		if (robo.isPresent())
 			return new ResponseEntity<String>(robo.get().ultimaPosicao().getSaida(), HttpStatus.OK);
 		return new ResponseEntity<String>(MSG_ERROR, HttpStatus.BAD_REQUEST);
+	}
+
+	private Optional<Robo> buscarRobo() {
+		if (roboRepository.existsById(1L)) {
+			return roboRepository.findById(1L);
+		} else {
+			return Optional.of(roboRepository.save(new Robo()));
+		}
 	}
 
 }

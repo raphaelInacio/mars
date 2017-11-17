@@ -7,8 +7,7 @@ public class DeslocamentoSul implements Deslocamento {
 
 	@Override
 	public String iniciar(Posicao posicaoAtual, Area area) {
-		return area.getDimensao()[posicaoAtual.getCartesianoX()][posicaoAtual.getCartesianoY()
-		                                     					- deslocamento];
+		return area.getDimensao()[posicaoAtual.getCartesianoX()][posicaoAtual.getCartesianoY() - deslocamento];
 	}
 
 }
