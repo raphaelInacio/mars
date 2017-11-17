@@ -1,7 +1,7 @@
 package com.br.contaaazul.mars.controller;
 
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -32,7 +32,7 @@ public class RoboControllerTest {
 	@Test
 	public void deveFazerUmaChamdaHttpNoRobo() throws Exception {
 		given(this.roboService.aplicar(Optional.of("MMRMMRMM"))).willReturn(new ResponseEntity<String>("(2,0,S)", HttpStatus.OK));
-		mvc.perform(get("/rest/mars/MMRMMRMM").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+		mvc.perform(post("/rest/mars/MMRMMRMM").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 				.andExpect(jsonPath("$").value("(2,0,S)"));
 	}
 
@@ -40,14 +40,14 @@ public class RoboControllerTest {
 	public void deveRetornar404QuandoUmaPosicaoInvalidaForEnviada() throws Exception {
 		given(this.roboService.aplicar(Optional.of("MMMMMMMMMMMMMMMMMMMMMMMM")))
 				.willReturn(new ResponseEntity<String>("Posição inválida", HttpStatus.BAD_REQUEST));
-		mvc.perform(get("/rest/mars/MMMMMMMMMMMMMMMMMMMMMMMM").contentType(MediaType.APPLICATION_JSON))
+		mvc.perform(post("/rest/mars/MMMMMMMMMMMMMMMMMMMMMMMM").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isBadRequest()).andExpect(jsonPath("$").value("Posição inválida"));
 	}
 
 	@Test
 	public void deveREceberAUltimaPosicaoDoRobo() throws Exception {
 		given(this.roboService.posicaoAtual()).willReturn(new ResponseEntity<String>("(0,0,N)", HttpStatus.OK));
-		mvc.perform(get("/rest/mars/robo/position").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+		mvc.perform(post("/rest/mars/robo/position").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 				.andExpect(jsonPath("$").value("(0,0,N)"));
 	}
 
