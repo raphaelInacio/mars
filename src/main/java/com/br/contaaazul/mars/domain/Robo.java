@@ -13,9 +13,6 @@ import javax.persistence.OneToOne;
 
 import com.br.contaaazul.mars.domain.Posicao;
 
-import lombok.Data;
-
-@Data
 @Entity
 public class Robo {
 	@Id
@@ -54,4 +51,29 @@ public class Robo {
 		}
 		posicoes.add(ultimaPosicao);
 	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public List<Posicao> getPosicoes() {
+		return posicoes;
+	}
+
+	public void setPosicoes(List<Posicao> posicoes) {
+		this.posicoes = posicoes;
+	}
+
+	public Area getArea() {
+		return area;
+	}
+
+	public void setArea(Area area) {
+		this.area = area;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
 }

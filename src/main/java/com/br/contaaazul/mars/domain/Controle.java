@@ -7,13 +7,8 @@ import java.util.Optional;
 
 import com.br.contaaazul.mars.enums.ComandoEnum;
 
-import lombok.Data;
-import lombok.ToString;
-
-@Data
-@ToString
 public class Controle {
-	
+
 	private List<ComandoEnum> comandos = new ArrayList<>();
 
 	public Controle(Optional<String> comandos) {
@@ -24,5 +19,9 @@ public class Controle {
 		comandosEnviados.forEach(c -> {
 			this.comandos.add(ComandoEnum.mapStringToEnum(c));
 		});
+	}
+
+	public List<ComandoEnum> getComandos() {
+		return comandos;
 	}
 }

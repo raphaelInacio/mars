@@ -10,14 +10,9 @@ import org.slf4j.LoggerFactory;
 
 import com.br.contaaazul.mars.exception.AreaException;
 
-import lombok.Getter;
-import lombok.ToString;
-
-@Getter
-@ToString
 @Entity
 public class Area {
-	
+
 	private static final Logger loggger = LoggerFactory.getLogger(Area.class);
 
 	@Id
@@ -27,8 +22,10 @@ public class Area {
 	private int dimensaoY;
 	private String dimensoes;
 
-	@Transient static final int VALOR_MINIMO = 5;
-	@Transient private String[][] dimensao;
+	@Transient
+	static final int VALOR_MINIMO = 5;
+	@Transient
+	private String[][] dimensao;
 
 	public Area(int dimensaoX, int dimensaoY) throws AreaException {
 		if (dimensaoX == 0 || dimensaoY == 0) {
@@ -57,4 +54,45 @@ public class Area {
 			}
 		}
 	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public int getDimensaoX() {
+		return dimensaoX;
+	}
+
+	public void setDimensaoX(int dimensaoX) {
+		this.dimensaoX = dimensaoX;
+	}
+
+	public int getDimensaoY() {
+		return dimensaoY;
+	}
+
+	public void setDimensaoY(int dimensaoY) {
+		this.dimensaoY = dimensaoY;
+	}
+
+	public String getDimensoes() {
+		return dimensoes;
+	}
+
+	public void setDimensoes(String dimensoes) {
+		this.dimensoes = dimensoes;
+	}
+
+	public String[][] getDimensao() {
+		return dimensao;
+	}
+
+	public void setDimensao(String[][] dimensao) {
+		this.dimensao = dimensao;
+	}
+
 }

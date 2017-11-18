@@ -14,10 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.br.contaaazul.mars.domain.Area;
-import com.br.contaaazul.mars.domain.Posicao;
-import com.br.contaaazul.mars.domain.Robo;
-import com.br.contaaazul.mars.repository.RoboRepository;
 import com.br.contaaazul.mars.services.RoboService;
 
 @RunWith(SpringRunner.class)

@@ -58,8 +58,31 @@ Uma vez iniciado agora podemos enviar comandos para ele, para controlar cada rob
 **Posição atual:**
 
     curl -s --request POST http://localhost:8080/rest/mars/robo/position
-    Saída esperada: 400 Bad Request
+    Saída esperada: (2, 0, S)
 
 
-# Dúvidas 
+Detalhes Técnicos
+----------------------------
+A partir do momento que a primeira requisição ao robô é realizada, a Classe RoboServiceImpl realiza uma consulta a base de dados H2 em memória para verificar se já existe um robô criado, caso exista um robô é utilizado o robô da base de dados, caso não seja encontrado um robô, um novo será criado na posição (0,0,N) com uma área de 5X5.
+
+A partir do momento que um Robo é registrado na base de dados ele será utilizado durante todo o ciclo de vida da aplicação.
+
+A cada requisição realizada com sucesso uma nova posição é registrada no Robo.
+
+Para recuperar a ultima posição basta acessar a API abaixo:
+
+
+    curl -s --request POST http://localhost:8080/rest/mars/robo/position
+    Saída esperada: (2, 0, S)
+
+Pontos de melhoria para próximas versões:
+
+ - Permitir criar um novo robô via API
+ - Alterar a area do terreno via API
+ - Reiniciar posição atual
+ - Relatório com todas as coordenadas enviadas
+
+# Dúvidas e bugs
+email: contato.raphaelinacio@gmail.com
+telefone: 11-954950529
 
