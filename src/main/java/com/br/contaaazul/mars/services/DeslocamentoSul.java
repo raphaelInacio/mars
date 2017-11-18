@@ -3,7 +3,7 @@ package com.br.contaaazul.mars.services;
 import com.br.contaaazul.mars.domain.Area;
 import com.br.contaaazul.mars.domain.Posicao;
 
-public class DeslocamentoSul implements Deslocamento {
+public class DeslocamentoSul implements DeslocamentoService {
 
 	@Override
 	public String iniciar(Posicao posicaoAtual, Area area) {

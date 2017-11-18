@@ -19,7 +19,7 @@ public class AreaServiceImpl implements AreaService {
 	private static final Logger loggger = LoggerFactory.getLogger(AreaServiceImpl.class);
 
 	private OrientacaoService orientacaoService;
-	private Deslocamento deslocamentoService;
+	private DeslocamentoService deslocamentoService;
 	private Area area;
 	private Posicao posicaoAtual;
 	private String areaPercorrida;
@@ -68,7 +68,7 @@ public class AreaServiceImpl implements AreaService {
 		salvarPosicao();
 	}
 
-	private Deslocamento calibrarDeslocamento() {
+	private DeslocamentoService calibrarDeslocamento() {
 		if (orientacao == null) 
 			orientacao = posicaoAtual.getOrientacao();
 		return OrientacaoEnum.orientacaoState(orientacao);
