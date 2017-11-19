@@ -43,6 +43,14 @@ public class RoboControllerTest {
 		mvc.perform(post("/rest/mars/MMMMMMMMMMMMMMMMMMMMMMMM").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isBadRequest()).andExpect(jsonPath("$").value("Posição inválida"));
 	}
+	
+	@Test
+	public void deveRetornar404QuandoComandosInvalidosForemEnviados() throws Exception {
+		given(this.roboService.aplicar(Optional.of("AAAA")))
+				.willReturn(new ResponseEntity<String>("Posição inválida", HttpStatus.BAD_REQUEST));
+		mvc.perform(post("/rest/mars/AAAA").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isBadRequest()).andExpect(jsonPath("$").value("Posição inválida"));
+	}
 
 	@Test
 	public void deveREceberAUltimaPosicaoDoRobo() throws Exception {
